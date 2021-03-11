@@ -83,19 +83,9 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         }
       }
 
-      function saveCoords(coordsObj) {
-        localStorage.setItem(COORDS, JSON.stringify(coordsObj));
-      }
-
       function handleGeoSucces(position) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
-
-        const coordsObj = {
-          latitude,
-          longitude,
-        };
-        saveCoords(coordsObj);
         setCurrentLocationMap(latitude, longitude);
       }
 
@@ -110,20 +100,8 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         );
       }
 
-      function loadCoords() {
-        const loadedCoords = localStorage.getItem(COORDS);
-        if (loadedCoords === null) {
-          askForCoords();
-        } else {
-          const parsedCoords = JSON.parse(loadedCoords);
-          setCurrentLocationMap(parsedCoords.latitude, parsedCoords.longitude);
-          latitude = parsedCoords.latitude;
-          longitude = parsedCoords.longitude;
-        }
-      }
-
       function init() {
-        loadCoords();
+        askForCoords();
       }
 
       init();
