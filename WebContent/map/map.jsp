@@ -25,32 +25,14 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
       const COORDS = 'coords';
       let latitude = '';
       let longitude = '';
+      var container = document.getElementById('map');
+      var options = {
+        center: new kakao.maps.LatLng(35.86120949251559, 128.59938944544942),
+        level: 3,
+      };
+      var map = new kakao.maps.Map(container, options);
 
-      function setCurrentLocationMap(lat, lng) {
-        var container = document.getElementById('map');
-        var options = {
-          center: new kakao.maps.LatLng(35.86120949251559, 128.59938944544942),
-          level: 3,
-        };
-        var map = new kakao.maps.Map(container, options);
-        var markerPosition = new kakao.maps.LatLng(
-          35.86120949251559,
-          128.59938944544942
-        );
-        var marker = new kakao.maps.Marker({
-          position: markerPosition,
-        });
-
-        marker.setMap(map);
-
-        latitude = lat;
-        longitude = lng;
-
-        const spanLat = document.querySelector('#latitude');
-        const spanLng = document.querySelector('#longitude');
-        spanLat.textContent = latitude;
-        spanLng.textContent = longitude;
-
+      function setShopMarkers(lat, lng) {
         var positions = [
           {
             title: "Kick's",
@@ -83,10 +65,35 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         }
       }
 
+      function setCurrentLocationMarker(lat, lng) {
+        var markerPosition = new kakao.maps.LatLng(
+          35.86120949251559,
+          128.59938944544942
+        );
+        var marker = new kakao.maps.Marker({
+          position: markerPosition,
+        });
+
+        marker.setMap(map);
+
+        latitude = lat;
+        longitude = lng;
+
+        const spanLat = document.querySelector('#latitude');
+        const spanLng = document.querySelector('#longitude');
+        spanLat.textContent = latitude;
+        spanLng.textContent = longitude;
+      }
+
+      function setMarkers(lat, lng) {
+        setCurrentLocationMarker(lat, lng);
+        setShopMarkers(lat, lng);
+      }
+
       function handleGeoSucces(position) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
-        setCurrentLocationMap(latitude, longitude);
+        setMarkers(latitude, longitude);
       }
 
       function handleGeoError() {
