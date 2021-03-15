@@ -150,8 +150,46 @@ public class ShopInfoDAO {
 	}
 
 	public ShopInfoDTO getView(int no) {
-		// TODO Auto-generated method stub
-		return null;
+		ShopInfoDTO dto = new ShopInfoDTO();
+		conn = getConn();
+		try {
+			String sql = "";
+			sql += "SELECT no, id, latitude, longitude, name, instagram, ";
+			sql += "address, shopUrl, regiDate, preNo, preName, nxtNo, nxtName FROM ";
+			sql += "(";
+			sql += "SELECT s.*, ";
+			sql += "LAG(no) OVER (ORDER BY no DESC) preNo, ";
+			sql += "LAG(name) OVER (ORDER BY no DESC) preName, ";
+			sql += "LEAD(no) OVER (ORDER BY no DESC) nxtNo, ";
+			sql += "LEAD(name) OVER (ORDER BY no DESC) nxtName ";
+			sql += "FROM " + SHOP_INFO + " s ORDER BY no DESC";
+			sql += ") WHERE no = ?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				dto.setNo(rs.getInt("no"));
+				dto.setId(rs.getString("id"));
+				dto.setLatitude(rs.getDouble("latitude"));
+				dto.setLongitude(rs.getDouble("longitude"));
+				dto.setName(rs.getString("name"));
+				dto.setInstagram(rs.getString("instagram"));
+				dto.setAddress(rs.getString("address"));
+				dto.setShopUrl(rs.getString("shopUrl"));
+				dto.setRegiDate(rs.getDate("regiDate"));
+
+				dto.setPreNo(rs.getInt("preNo"));
+				dto.setPreName(rs.getString("preName"));
+				dto.setNxtNo(rs.getInt("nxtNo"));
+				dto.setName(rs.getString("nxtName"));
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			getConnClose(rs, pstmt, conn);
+		}
+		return dto;
 	}
 
 }

@@ -144,6 +144,8 @@ public class ShopController extends HttpServlet {
 			
 		}else if (url.indexOf("view.do") != -1) {
 			dto = dao.getView(no);
+			System.out.println(dto.getName());
+			System.out.println(dto.getId());
 
 			request.setAttribute("menu_gubun", "shop_view");
 			request.setAttribute("dto", dto);

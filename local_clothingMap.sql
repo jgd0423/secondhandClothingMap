@@ -20,3 +20,19 @@ select * from shopInfo;
 
 update shopinfo set latitude = '35.86111948176465' where no = 1;
 commit;
+
+SELECT name FROM (SELECT s.*, LAG(no) OVER (ORDER BY no DESC) preNo, LAG(name) OVER (ORDER BY no DESC) preName, LEAD(no) OVER (ORDER BY no DESC) nxtNo, LEAD(name) OVER (ORDER BY no DESC) nxtName FROM shopInfo s ORDER BY no DESC) WHERE no = 1;
+
+SELECT 
+    no, 
+    id, 
+    latitude, 
+    longitude, 
+    name, 
+    instagram, 
+    address, 
+    shopUrl, 
+    regiDate FROM (SELECT s.*, LAG(no) OVER (ORDER BY no DESC) preNo, LAG(name) OVER (ORDER BY no DESC) preName, LEAD(no) OVER (ORDER BY no DESC) nxtNo, LEAD(name) OVER (ORDER BY no DESC) nxtName FROM shopInfo s ORDER BY no DESC) WHERE no = 1;
+
+delete shopinfo where no = 21;
+commit;
