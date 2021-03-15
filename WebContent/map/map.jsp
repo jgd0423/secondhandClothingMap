@@ -20,6 +20,8 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
           <button class="distance">200</button>
           <button class="distance">400</button>
         </div>
+        <br />
+        <button id="btnWrite" onclick="goWrite()">자료입력</button>
       </div>
     </div>
 
@@ -43,6 +45,11 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
           latlng: new kakao.maps.LatLng(35.86209, 128.59572),
         },
       ];
+      
+      function goWrite() {
+    		location.href = '${path}/shop_servlet/write.do';
+
+    	}
 
       const distanceBtn = document.querySelector('#buttonContainer');
       distanceBtn.addEventListener('click', (e) => {
