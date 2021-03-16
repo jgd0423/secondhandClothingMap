@@ -190,33 +190,6 @@ public class ShopInfoDAO {
 		List<ShopInfoDTO> list = session.selectList("shopInfo.getShopInfos", map);
 		session.close();
 		return list;
-//		conn = getConn();
-//		ArrayList<ShopInfoDTO> list = new ArrayList<>();
-//		try {
-//			String sql = "SELECT * FROM " + SHOP_INFO + " ORDER BY no DESC";
-//			pstmt = conn.prepareStatement(sql);
-//			rs = pstmt.executeQuery();
-//			while (rs.next()) {
-//				ShopInfoDTO dto = new ShopInfoDTO();
-//				dto.setNo(rs.getInt("no"));
-//				dto.setId(rs.getString("id"));
-//				dto.setLatitude(rs.getDouble("latitude"));
-//				dto.setLongitude(rs.getDouble("longitude"));
-//				dto.setShopName(rs.getString("shopName"));
-//				dto.setInstagram(rs.getString("instagram"));
-//				dto.setAddress(rs.getString("address"));
-//				dto.setShopUrl(rs.getString("shopUrl"));
-//				dto.setRegiDate(rs.getDate("regiDate"));
-//				list.add(dto);
-//			}
-//			
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//		} finally {
-//			getConnClose(rs, pstmt, conn);
-//		}
-//		
-//		return list;
 	}
 
 }
