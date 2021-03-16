@@ -27,7 +27,7 @@ public class IndexController extends HttpServlet {
 		String path = request.getContextPath();
 		String url = request.getRequestURL().toString();
 		
-		String page = "/map/map.jsp";
+		String page = "/map_servlet/map.do";
 		//response.sendRedirect(page);
 		RequestDispatcher rd = request.getRequestDispatcher(page);
 		rd.forward(request, response);

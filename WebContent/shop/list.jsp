@@ -130,6 +130,7 @@ ${allRowsCount }개의 레코드가 있습니다.
 			<td colspan="10" align="right">
 				<button type="button" onclick="chooseAll()">전체목록</button>&nbsp;
 				<button type="button" onclick="goWrite()">가게추가</button>&nbsp;
+				<button type="button" onclick="goMap()">지도로</button>
 			</td>
 		</tr>
 	</table>
@@ -137,6 +138,10 @@ ${allRowsCount }개의 레코드가 있습니다.
 <br>
 
 <script>
+
+function goMap() {
+	location.href = '${path}/map_servlet/map.do';	
+}
 
 function choosePage(pageNumber, search_option, search_data) {
 	let url = '';

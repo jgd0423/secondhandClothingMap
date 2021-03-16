@@ -54,7 +54,7 @@ function goList() {
 }
 
 function goMap() {
-	location.href = '${path}/shop_servlet/map.do';	
+	location.href = '${path}/map_servlet/map.do';	
 }
 
 </script>

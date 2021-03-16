@@ -38,4 +38,11 @@ SELECT
     shopUrl, 
     preShop,
     nxtShop,
-    regiDate FROM (SELECT s.*, LAG(no) OVER (ORDER BY no DESC) preNo, LAG(name) OVER (ORDER BY no DESC) preShop, LEAD(no) OVER (ORDER BY no DESC) nxtNo, LEAD(name) OVER (ORDER BY no DESC) nxtShop FROM shopInfo s ORDER BY no DESC);
+    regiDate FROM (SELECT s.*, LAG(no) OVER (ORDER BY no DESC) preNo, LAG(shopName) OVER (ORDER BY no DESC) preShop, LEAD(no) OVER (ORDER BY no DESC) nxtNo, LEAD(shopName) OVER (ORDER BY no DESC) nxtShop FROM shopInfo s ORDER BY no DESC);
+
+SELECT seq_shopInfo.NEXTVAL as seq FROM DUAL;
+
+INSERT INTO shopInfo VALUES ('3', '1', '1', '1', '1', '1', '1', '1', SYSDATE);
+
+delete shopinfo where no = 3;
+commit;

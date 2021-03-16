@@ -101,12 +101,6 @@ public class ShopController extends HttpServlet {
 			response.sendRedirect(temp);
 			
 			
-		} else if (url.indexOf("map.do") != -1) {
-			String page = "/map/map.jsp";
-			RequestDispatcher rd = request.getRequestDispatcher(page);
-			rd.forward(request, response);
-			
-			
 		} else if (url.indexOf("list.do") != -1) {
 			// paging
 			int allRowsCount = dao.getAllRowsCount(search_option, search_data);

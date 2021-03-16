@@ -34,22 +34,11 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
       const container = document.getElementById('map');
       let options = {};
       let map = null;
-      let distance = '200';
-      const shopInpos = [
-        {
-          title: "Kick's",
-          latlng: new kakao.maps.LatLng(35.86099, 128.59818),
-        },
-        {
-          title: 'Oltremare',
-          latlng: new kakao.maps.LatLng(35.86209, 128.59572),
-        },
-      ];
-      
-      function goWrite() {
-    		location.href = '${path}/shop_servlet/write.do';
+      const shopInpos = null;
 
-    	}
+      function goWrite() {
+        location.href = '${path}/shop_servlet/write.do';
+      }
 
       const distanceBtn = document.querySelector('#buttonContainer');
       distanceBtn.addEventListener('click', (e) => {
@@ -75,33 +64,18 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         circle.setMap(map);
       }
 
-      function getPolylineBetweenMarkers(curLocLatLng, shopLatLng) {
-        var polyline = new daum.maps.Polyline({
-          path: [curLocLatLng, shopLatLng],
-          strokeWeight: 2,
-          strokeColor: '#FF00FF',
-          strokeOpacity: 0.8,
-          strokeStyle: 'solid',
-        });
-        console.log('길이: ' + polyline.getLength());
-
-        return polyline;
-      }
-
-      function setCurrentLocationMarker(lat, lng) {
-        const markerPosition = new kakao.maps.LatLng(lat, lng);
+      function setCurrentLocationMarker(currentLocation) {
+        const markerPosition = currentLocation;
         const marker = new kakao.maps.Marker({
-          position: markerPosition,
+          position: currentLocation,
         });
 
         marker.setMap(map);
 
         const spanLat = document.querySelector('#latitude');
         const spanLng = document.querySelector('#longitude');
-        spanLat.textContent = lat;
-        spanLng.textContent = lng;
-
-        return markerPosition;
+        spanLat.textContent = currentLocation.getLat();
+        spanLng.textContent = currentLocation.getLng();
       }
 
       function setShopMarkers(latlngObj) {
@@ -141,22 +115,24 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         }
       }
 
-      function initMap(lat, lng) {
+      function initMap(currentLocation) {
         options = {
-          center: new kakao.maps.LatLng(lat, lng),
+          center: currentLocation,
           level: 3,
         };
         map = new kakao.maps.Map(container, options);
 
-        const distance = 150;
-        drawCircle(lat, lng);
-        setMarkers(lat, lng);
+        setCurrentLocationMarker(currentLocation);
       }
 
       function handleGeoSuccess(position) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
-        initMap(35.86120949251559, 128.59938944544942);
+        const currentLocation = new kakao.maps.LatLng(
+          35.86120949251559,
+          128.59938944544942
+        );
+        initMap(currentLocation);
       }
 
       function handleGeoError() {

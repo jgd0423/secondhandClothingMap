@@ -4,9 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.session.SqlSession;
 
 import db.DbExample;
 import map.model.dto.ShopInfoDTO;
+import sqlmap.MybatisManager;
 
 public class ShopInfoDAO {
 	// Field
@@ -27,6 +33,16 @@ public class ShopInfoDAO {
 	}
 
 	public int setInsert(ShopInfoDTO dto) {
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("dto", dto);
+//		map.put("SHOP_INFO", SHOP_INFO);
+		
+//		SqlSession session = MybatisManager.getInstance().openSession();
+//		int result = session.insert("shopInfo.setInsert", dto);
+//		session.close();
+//		System.out.println(result);
+//		return result;
+		
 		conn = getConn();
 		int result = 0;
 		try {
@@ -238,6 +254,36 @@ public class ShopInfoDAO {
 			getConnClose(rs, pstmt, conn);
 		}
 		return result;
+	}
+
+	public ArrayList<ShopInfoDTO> getAllShopInfos() {
+		conn = getConn();
+		ArrayList<ShopInfoDTO> list = new ArrayList<>();
+		try {
+			String sql = "SELECT * FROM " + SHOP_INFO + " ORDER BY no DESC";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				ShopInfoDTO dto = new ShopInfoDTO();
+				dto.setNo(rs.getInt("no"));
+				dto.setId(rs.getString("id"));
+				dto.setLatitude(rs.getDouble("latitude"));
+				dto.setLongitude(rs.getDouble("longitude"));
+				dto.setShopName(rs.getString("shopName"));
+				dto.setInstagram(rs.getString("instagram"));
+				dto.setAddress(rs.getString("address"));
+				dto.setShopUrl(rs.getString("shopUrl"));
+				dto.setRegiDate(rs.getDate("regiDate"));
+				list.add(dto);
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			getConnClose(rs, pstmt, conn);
+		}
+		
+		return list;
 	}
 
 }
