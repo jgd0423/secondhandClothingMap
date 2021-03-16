@@ -16,7 +16,7 @@
 		</tr>
 		<tr>
 			<td>가게이름 : </td>
-			<td>${dto.name}</td>
+			<td>${dto.shopName}</td>
 		</tr>
 		<tr>
 			<td>위도 : </td>
@@ -44,7 +44,7 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<button type="button" onclick="goWrite()">글쓰기</button>
+				<button type="button" onclick="goWrite()">가게추가</button>
 				<button type="button" onclick="goModify(${dto.no})">수정하기</button>
 				<button type="button" onclick="goDelete(${dto.no})">삭제하기</button>
 				<button type="button" onclick="goList()">목록으로</button>
@@ -56,22 +56,22 @@
 					<tr>
 						<td width="100px">이전글 : </td>
 						<td>
-							<c:if test="${dto.preName == null }">
+							<c:if test="${dto.preShop == null }">
 								이전글이 없습니다.
 							</c:if>
-							<c:if test="${dto.preName != null }">
-								<a href="#" onclick="goNearPage(${dto.preNo})">${dto.preName }</a>
+							<c:if test="${dto.preShop != null }">
+								<a href="#" onclick="goNearPage(${dto.preNo})">${dto.preShop }</a>
 							</c:if>
 						</td>
 					</tr>
 					<tr>
 						<td width="100px">다음글 : </td>
 						<td>
-							<c:if test="${dto.nxtName == null }">
+							<c:if test="${dto.nxtShop == null }">
 								다음글이 없습니다.
 							</c:if>
-							<c:if test="${dto.nxtName != null }">
-								<a href="#" onclick="goNearPage(${dto.nxtNo})">${dto.nxtName }</a>
+							<c:if test="${dto.nxtShop != null }">
+								<a href="#" onclick="goNearPage(${dto.nxtNo})">${dto.nxtShop }</a>
 							</c:if>
 						</td>
 					</tr>
@@ -85,33 +85,23 @@
 <script>
 
 function goNearPage(no) {
-	location.href = `${path}/board2_servlet/view.do?no=\${no}`;
+	location.href = `${path}/shop_servlet/view.do?no=\${no}`;
 }
 
 function goList() {
-	location.href = '${path}/board2_servlet/list.do';
+	location.href = '${path}/shop_servlet/list.do';
 }
 
 function goWrite() {
-	location.href = '${path}/board2_servlet/write.do';
-}
-
-function goView(no) {
-	document.viewForm.method = 'post';
-	document.viewForm.action = `${path}/board2_servlet/view.do?no=\${no}`;
-	document.viewForm.submit();
-}
-
-function goReply(no) {
-	location.href = `${path}/board2_servlet/reply.do?no=\${no}`;
+	location.href = '${path}/shop_servlet/write.do';
 }
 
 function goModify(no) {
-	location.href = `${path}/board2_servlet/modify.do?no=\${no}`;
+	location.href = `${path}/shop_servlet/modify.do?no=\${no}`;
 }
 
 function goDelete(no) {
-	location.href = `${path}/board2_servlet/delete.do?no=\${no}`;
+	location.href = `${path}/shop_servlet/delete.do?no=\${no}`;
 }
 
 </script>

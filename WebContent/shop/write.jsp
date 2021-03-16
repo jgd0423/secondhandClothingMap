@@ -9,7 +9,7 @@
 		</tr>
 		<tr>
 			<td>가게이름</td>
-			<td><input style="width: 100%;" type="text" name="name" id="name" /></td>
+			<td><input style="width: 100%;" type="text" name="shopName" id="shopName" /></td>
 		</tr>
 		<tr>
 			<td>위도(latitude)</td>

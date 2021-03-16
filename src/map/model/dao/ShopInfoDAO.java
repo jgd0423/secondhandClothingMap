@@ -36,7 +36,7 @@ public class ShopInfoDAO {
 			pstmt.setString(1, dto.getId());
 			pstmt.setDouble(2, dto.getLatitude());
 			pstmt.setDouble(3, dto.getLongitude());
-			pstmt.setString(4, dto.getName());
+			pstmt.setString(4, dto.getShopName());
 			pstmt.setString(5, dto.getInstagram());
 			pstmt.setString(6, dto.getAddress());
 			pstmt.setString(7, dto.getShopUrl());
@@ -132,7 +132,7 @@ public class ShopInfoDAO {
 				dto.setId(rs.getString("id"));
 				dto.setLatitude(rs.getDouble("latitude"));
 				dto.setLongitude(rs.getDouble("longitude"));
-				dto.setName(rs.getString("name"));
+				dto.setShopName(rs.getString("shopName"));
 				dto.setInstagram(rs.getString("instagram"));
 				dto.setAddress(rs.getString("address"));
 				dto.setShopUrl(rs.getString("shopUrl"));
@@ -154,14 +154,14 @@ public class ShopInfoDAO {
 		conn = getConn();
 		try {
 			String sql = "";
-			sql += "SELECT no, id, latitude, longitude, name, instagram, ";
-			sql += "address, shopUrl, regiDate, preNo, preName, nxtNo, nxtName FROM ";
+			sql += "SELECT no, id, latitude, longitude, shopName, instagram, ";
+			sql += "address, shopUrl, regiDate, preNo, preShop, nxtNo, nxtShop FROM ";
 			sql += "(";
 			sql += "SELECT s.*, ";
 			sql += "LAG(no) OVER (ORDER BY no DESC) preNo, ";
-			sql += "LAG(name) OVER (ORDER BY no DESC) preName, ";
+			sql += "LAG(shopName) OVER (ORDER BY no DESC) preShop, ";
 			sql += "LEAD(no) OVER (ORDER BY no DESC) nxtNo, ";
-			sql += "LEAD(name) OVER (ORDER BY no DESC) nxtName ";
+			sql += "LEAD(shopName) OVER (ORDER BY no DESC) nxtShop ";
 			sql += "FROM " + SHOP_INFO + " s ORDER BY no DESC";
 			sql += ") WHERE no = ?";
 
@@ -173,23 +173,71 @@ public class ShopInfoDAO {
 				dto.setId(rs.getString("id"));
 				dto.setLatitude(rs.getDouble("latitude"));
 				dto.setLongitude(rs.getDouble("longitude"));
-				dto.setName(rs.getString("name"));
+				dto.setShopName(rs.getString("shopName"));
 				dto.setInstagram(rs.getString("instagram"));
 				dto.setAddress(rs.getString("address"));
 				dto.setShopUrl(rs.getString("shopUrl"));
 				dto.setRegiDate(rs.getDate("regiDate"));
 
 				dto.setPreNo(rs.getInt("preNo"));
-				dto.setPreName(rs.getString("preName"));
+				dto.setPreShop(rs.getString("preShop"));
 				dto.setNxtNo(rs.getInt("nxtNo"));
-				dto.setName(rs.getString("nxtName"));
+				dto.setNxtShop(rs.getString("nxtShop"));
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
 			getConnClose(rs, pstmt, conn);
 		}
+		
 		return dto;
+	}
+
+	public int setUpdate(ShopInfoDTO dto) {
+		conn = getConn();
+		int result = 0;
+		try {
+			String sql = "UPDATE " + SHOP_INFO + " SET "
+					+ "latitude = ?, "
+					+ "longitude = ?, "
+					+ "shopName = ?, "
+					+ "instagram = ?, "
+					+ "address = ?, "
+					+ "shopUrl = ? "
+					+ "WHERE no = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setDouble(1, dto.getLatitude());
+			pstmt.setDouble(2, dto.getLongitude());
+			pstmt.setString(3, dto.getShopName());
+			pstmt.setString(4, dto.getInstagram());
+			pstmt.setString(5, dto.getAddress());
+			pstmt.setString(6, dto.getShopUrl());
+			pstmt.setInt(7, dto.getNo());
+
+			result = pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			getConnClose(rs, pstmt, conn);
+		}
+		
+		return result;
+	}
+
+	public int setDelete(ShopInfoDTO dto) {
+		conn = getConn();
+		int result = 0;
+		try {
+			String sql = "DELETE FROM " + SHOP_INFO + " WHERE no = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dto.getNo());
+			result = pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			getConnClose(rs, pstmt, conn);
+		}
+		return result;
 	}
 
 }

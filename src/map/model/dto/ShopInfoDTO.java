@@ -6,21 +6,21 @@ public class ShopInfoDTO {
 	// Field
 	private String id;
 	private int no;
-	private String name;
+	private String shopName;
 	private double latitude;
 	private double longitude;
 	private String address;
 	private String shopUrl;
 	private String instagram;
 	private Date regiDate;
-	private String preName;
-	private String nxtName;
+	private String preShop;
+	private String nxtShop;
 	private int preNo;
 	private int nxtNo;
 	
 	// Constructor
 	public ShopInfoDTO() {}
-	
+
 	// Getters and Setters
 	public String getId() {
 		return id;
@@ -38,12 +38,12 @@ public class ShopInfoDTO {
 		this.no = no;
 	}
 
-	public String getName() {
-		return name;
+	public String getShopName() {
+		return shopName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
 	}
 
 	public double getLatitude() {
@@ -94,20 +94,20 @@ public class ShopInfoDTO {
 		this.regiDate = regiDate;
 	}
 
-	public String getPreName() {
-		return preName;
+	public String getPreShop() {
+		return preShop;
 	}
 
-	public void setPreName(String preName) {
-		this.preName = preName;
+	public void setPreShop(String preShop) {
+		this.preShop = preShop;
 	}
 
-	public String getNxtName() {
-		return nxtName;
+	public String getNxtShop() {
+		return nxtShop;
 	}
 
-	public void setNxtName(String nxtName) {
-		this.nxtName = nxtName;
+	public void setNxtShop(String nxtShop) {
+		this.nxtShop = nxtShop;
 	}
 
 	public int getPreNo() {

@@ -82,7 +82,7 @@ ${allRowsCount }개의 레코드가 있습니다.
 					<td>${tableRowNum }</td>
 					<td>${dto.id }</td>
 					<td>
-						<a href="#" onclick="goView('${dto.no }')"> ${dto.name }</a>
+						<a href="#" onclick="goView('${dto.no }')"> ${dto.shopName }</a>
 					</td>
 					<td>${dto.latitude }</td>
 					<td>${dto.longitude }</td>

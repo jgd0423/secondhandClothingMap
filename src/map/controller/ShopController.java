@@ -1,6 +1,7 @@
 package map.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -76,7 +77,7 @@ public class ShopController extends HttpServlet {
 			String longitude_ = request.getParameter("longitude");
 			Double latitude = Double.parseDouble(latitude_);
 			Double longitude = Double.parseDouble(longitude_);
-			String name = request.getParameter("name");
+			String shopName = request.getParameter("shopName");
 			String instagram = request.getParameter("instagram");
 			String address = request.getParameter("address");
 			String shopUrl = request.getParameter("shopUrl");
@@ -85,7 +86,7 @@ public class ShopController extends HttpServlet {
 			dto.setId(uuid);
 			dto.setLatitude(latitude);
 			dto.setLongitude(longitude);
-			dto.setName(name);
+			dto.setShopName(shopName);
 			dto.setInstagram(instagram);
 			dto.setAddress(address);
 			dto.setShopUrl(shopUrl);
@@ -142,10 +143,8 @@ public class ShopController extends HttpServlet {
 			rd.forward(request, response);
 			
 			
-		}else if (url.indexOf("view.do") != -1) {
+		} else if (url.indexOf("view.do") != -1) {
 			dto = dao.getView(no);
-			System.out.println(dto.getName());
-			System.out.println(dto.getId());
 
 			request.setAttribute("menu_gubun", "shop_view");
 			request.setAttribute("dto", dto);
@@ -154,6 +153,66 @@ public class ShopController extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher(page);
 			rd.forward(request, response);
 			
+			
+		} else if (url.indexOf("modify.do") != -1) {
+			dto = dao.getView(no);
+			
+			request.setAttribute("menu_gubun", "shop_modify");
+			request.setAttribute("dto", dto);
+			
+			String page = "/shop/modify.jsp";
+			RequestDispatcher rd = request.getRequestDispatcher(page);
+			rd.forward(request, response);
+			
+		} else if (url.indexOf("modifyProc.do") != -1) {
+			String shopName = request.getParameter("shopName");
+			String latitude_ = request.getParameter("latitude");
+			String longitude_ = request.getParameter("longitude");
+			Double latitude = Double.parseDouble(latitude_);
+			Double longitude = Double.parseDouble(longitude_);
+			String instagram = request.getParameter("instagram");
+			String address = request.getParameter("address");
+			String shopUrl = request.getParameter("shopUrl");
+
+			dto.setLatitude(latitude);
+			dto.setLongitude(longitude);
+			dto.setShopName(shopName);
+			dto.setInstagram(instagram);
+			dto.setAddress(address);
+			dto.setShopUrl(shopUrl);
+			dto.setNo(no);
+			
+			int result = dao.setUpdate(dto);				
+			
+			String temp;
+			if (result > 0) {
+				temp = path + "/shop_servlet/view.do?no=" + no;
+			} else {
+				temp = path + "/shop_servlet/modify.do?no=" + no;
+			}
+			response.sendRedirect(temp);
+			
+		} else if (url.indexOf("delete.do") != -1) {
+			dto = dao.getView(no);
+			
+			request.setAttribute("menu_gubun", "shop_delete");
+			request.setAttribute("dto", dto);
+			
+			String page = "/shop/delete.jsp";
+			RequestDispatcher rd = request.getRequestDispatcher(page);
+			rd.forward(request, response);
+			
+		} else if (url.indexOf("deleteProc.do") != -1) {
+			dto.setNo(no);
+			int result = dao.setDelete(dto);				
+			
+			String temp;
+			if (result > 0) {
+				temp = path + "/shop_servlet/list.do";
+			} else {
+				temp = path + "/shop_servlet/delete.do?no=" + no;
+			}
+			response.sendRedirect(temp);
 			
 		}
 	}
