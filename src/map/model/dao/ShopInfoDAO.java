@@ -72,106 +72,22 @@ public class ShopInfoDAO {
 		map.put("SHOP_INFO", SHOP_INFO);
 		
 		SqlSession session = MybatisManager.getInstance().openSession();
-		int result = session.selectOne("member.getAllRowsCount", map);
+		int result = session.selectOne("shopInfo.getAllRowsCount", map);
 		session.close();
 		return result;
-		
-//		conn = getConn();
-//		int allRowsCount = 0;
-//		try {
-//			String sql = "SELECT COUNT(*) FROM " + SHOP_INFO + " WHERE no > 0 ";
-//			
-//			if (search_option.length() > 0 && search_data.length() > 0) {
-//				if (search_option.equals("name") || search_option.equals("instagram") || search_option.equals("shopUrl")) {
-//					sql += " AND " + search_option + " LIKE ? ";
-//				} else if (search_option.equals("name_instagram_shopUrl")) {
-//					sql += " and (name LIKE ? OR instagram LIKE ? OR shopUrl LIKE ?) ";
-//				}
-//			}
-//			
-//			int pstmtNum = 0;
-//			pstmt = conn.prepareStatement(sql);
-//			
-//			if (search_option.length() > 0 && search_data.length() > 0) {
-//				if (search_option.equals("name") || search_option.equals("instagram") || search_option.equals("shopUrl")) {
-//					pstmt.setString(++pstmtNum, '%' + search_data + '%');
-//				} else if (search_option.equals("name_instagram_shopUrl")) {
-//					pstmt.setString(++pstmtNum, '%' + search_data + '%');
-//					pstmt.setString(++pstmtNum, '%' + search_data + '%');
-//					pstmt.setString(++pstmtNum, '%' + search_data + '%');
-//				}
-//			}
-//			
-//			rs = pstmt.executeQuery();
-//			if (rs.next()) {
-//				allRowsCount = rs.getInt(1);
-//			}
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//		} finally {
-//			getConnClose(rs, pstmt, conn);
-//		}
-//		
-//		return allRowsCount;
 	}
 
-	public ArrayList<ShopInfoDTO> getPagingList(int startNum, int endNum, String search_option, String search_data) {
-		conn = getConn();
-		ArrayList<ShopInfoDTO> list = new ArrayList<>();
-		try {
-			String basic_sql = "SELECT * FROM " + SHOP_INFO + " WHERE no > 0 ";
-			
-			if (search_option.length() > 0 && search_data.length() > 0) {
-				if (search_option.equals("name") || search_option.equals("instagram") || search_option.equals("shopUrl")) {
-					basic_sql += " AND " + search_option + " LIKE ? ";
-				} else if (search_option.equals("name_instagram_shopUrl")) {
-					basic_sql += " and (name LIKE ? OR instagram LIKE ? OR shopUrl LIKE ?) ";
-				}
-			}
-			
-			basic_sql += "ORDER BY no DESC";
-			
-			String sql = "";
-			sql += "SELECT * FROM (SELECT A.*, Rownum Rnum FROM (" + basic_sql + ") A) ";
-			sql += "WHERE Rnum >= ? AND Rnum <= ?";
-			
-			int pstmtNum = 0;
-			pstmt = conn.prepareStatement(sql);
-			
-			if (search_option.length() > 0 && search_data.length() > 0) {
-				if (search_option.equals("name") || search_option.equals("instagram") || search_option.equals("shopUrl")) {
-					pstmt.setString(++pstmtNum, '%' + search_data + '%');
-				} else if (search_option.equals("name_instagram_shopUrl")) {
-					pstmt.setString(++pstmtNum, '%' + search_data + '%');
-					pstmt.setString(++pstmtNum, '%' + search_data + '%');
-					pstmt.setString(++pstmtNum, '%' + search_data + '%');
-				}
-			}
-			
-			pstmt.setInt(++pstmtNum, startNum);
-			pstmt.setInt(++pstmtNum, endNum);
-			
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				ShopInfoDTO dto = new ShopInfoDTO();
-				dto.setNo(rs.getInt("no"));
-				dto.setId(rs.getString("id"));
-				dto.setLatitude(rs.getDouble("latitude"));
-				dto.setLongitude(rs.getDouble("longitude"));
-				dto.setShopName(rs.getString("shopName"));
-				dto.setInstagram(rs.getString("instagram"));
-				dto.setAddress(rs.getString("address"));
-				dto.setShopUrl(rs.getString("shopUrl"));
-				dto.setRegiDate(rs.getDate("regiDate"));
-				list.add(dto);
-			}
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			getConnClose(rs, pstmt, conn);
-		}
+	public List<ShopInfoDTO> getPagingList(int startNum, int endNum, String search_option, String search_data) {
+		Map<String, String> map = new HashMap<>();
+		map.put("startNum", startNum + "");
+		map.put("endNum", endNum + "");
+		map.put("search_option", search_option);
+		map.put("search_data", search_data);
+		map.put("SHOP_INFO", SHOP_INFO);
 		
+		SqlSession session = MybatisManager.getInstance().openSession();
+		List<ShopInfoDTO> list = session.selectList("shopInfo.getPagingList", map);
+		session.close();
 		return list;
 	}
 
@@ -266,34 +182,41 @@ public class ShopInfoDAO {
 		return result;
 	}
 
-	public ArrayList<ShopInfoDTO> getShopInfos() {
-		conn = getConn();
-		ArrayList<ShopInfoDTO> list = new ArrayList<>();
-		try {
-			String sql = "SELECT * FROM " + SHOP_INFO + " ORDER BY no DESC";
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				ShopInfoDTO dto = new ShopInfoDTO();
-				dto.setNo(rs.getInt("no"));
-				dto.setId(rs.getString("id"));
-				dto.setLatitude(rs.getDouble("latitude"));
-				dto.setLongitude(rs.getDouble("longitude"));
-				dto.setShopName(rs.getString("shopName"));
-				dto.setInstagram(rs.getString("instagram"));
-				dto.setAddress(rs.getString("address"));
-				dto.setShopUrl(rs.getString("shopUrl"));
-				dto.setRegiDate(rs.getDate("regiDate"));
-				list.add(dto);
-			}
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			getConnClose(rs, pstmt, conn);
-		}
+	public List<ShopInfoDTO> getShopInfos() {
+		Map<String, String> map = new HashMap<>();
+		map.put("SHOP_INFO", SHOP_INFO);
 		
+		SqlSession session = MybatisManager.getInstance().openSession();
+		List<ShopInfoDTO> list = session.selectList("shopInfo.getShopInfos", map);
+		session.close();
 		return list;
+//		conn = getConn();
+//		ArrayList<ShopInfoDTO> list = new ArrayList<>();
+//		try {
+//			String sql = "SELECT * FROM " + SHOP_INFO + " ORDER BY no DESC";
+//			pstmt = conn.prepareStatement(sql);
+//			rs = pstmt.executeQuery();
+//			while (rs.next()) {
+//				ShopInfoDTO dto = new ShopInfoDTO();
+//				dto.setNo(rs.getInt("no"));
+//				dto.setId(rs.getString("id"));
+//				dto.setLatitude(rs.getDouble("latitude"));
+//				dto.setLongitude(rs.getDouble("longitude"));
+//				dto.setShopName(rs.getString("shopName"));
+//				dto.setInstagram(rs.getString("instagram"));
+//				dto.setAddress(rs.getString("address"));
+//				dto.setShopUrl(rs.getString("shopUrl"));
+//				dto.setRegiDate(rs.getDate("regiDate"));
+//				list.add(dto);
+//			}
+//			
+//		} catch(Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			getConnClose(rs, pstmt, conn);
+//		}
+//		
+//		return list;
 	}
 
 }

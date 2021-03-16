@@ -34,7 +34,15 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
       const container = document.getElementById('map');
       let options = {};
       let map = null;
-      const shopInpos = null;
+
+      const dbShopInfos = JSON.parse('${shopInfos}');
+
+      const shopInfos = dbShopInfos.map((shopInfo) => {
+        const data = new Object();
+        data.title = shopInfo.title;
+        data.latlng = new kakao.maps.LatLng(shopInfo.lat, shopInfo.lng);
+        return data;
+      });
 
       function goWrite() {
         location.href = '${path}/shop_servlet/write.do';
@@ -123,6 +131,9 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         map = new kakao.maps.Map(container, options);
 
         setCurrentLocationMarker(currentLocation);
+        for (let i = 0; i < shopInfos.length; i++) {
+          setShopMarkers(shopInfos[i]);
+        }
       }
 
       function handleGeoSuccess(position) {

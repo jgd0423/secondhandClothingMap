@@ -11,9 +11,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import map.common.MapUtil;
 import map.model.dao.ShopInfoDAO;
 import map.model.dto.ShopInfoDTO;
+import map.service.MapService;
 
 @WebServlet("/map_servlet/*")
 public class MapController extends HttpServlet {
@@ -66,8 +71,9 @@ public class MapController extends HttpServlet {
 		ShopInfoDTO dto = new ShopInfoDTO();
 		
 		if (url.indexOf("map.do") != -1) {
-			List<ShopInfoDTO> allShopInfos = dao.getShopInfos();
-			
+			MapService service = new MapService();
+			JSONArray shopInfos = service.getShopData();
+			request.setAttribute("shopInfos", shopInfos);
 			
 			String page = "/map/map.jsp";
 			RequestDispatcher rd = request.getRequestDispatcher(page);

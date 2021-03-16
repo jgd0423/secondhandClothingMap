@@ -26,4 +26,19 @@ PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
 		SELECT COUNT(*) FROM ${SHOP_INFO} WHERE 1=1
 		<include refid="search"></include>
 	</select>
+	
+	<select id="getPagingList" resultType="map.model.dto.ShopInfoDTO">
+		SELECT * FROM (SELECT A.*, Rownum Rnum from (
+		SELECT * FROM ${SHOP_INFO} WHERE 1=1
+		<include refid="search"></include>
+		ORDER BY no DESC
+		<![CDATA[
+		) A) WHERE Rnum >= #{startNum} AND Rnum <= #{endNum}
+		]]>
+	</select>
+	
+	<select id="getShopInfos" resultType="map.model.dto.ShopInfoDTO">
+		SELECT * FROM ${SHOP_INFO} WHERE 1=1
+		ORDER BY no DESC
+	</select>
 </mapper>
