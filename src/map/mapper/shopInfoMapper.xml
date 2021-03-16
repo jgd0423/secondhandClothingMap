@@ -7,4 +7,23 @@ PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
 	<insert id="setInsert" parameterType="map.model.dto.ShopInfoDTO">
 		INSERT INTO shopInfo VALUES ('3', #{id}, #{latitude}, #{longitude}, #{shopName}, #{instagram}, #{address}, #{shopUrl}, SYSDATE)
 	</insert>
+	
+	<sql id="search">
+		<choose>
+			<when test="search_option == 'name_instagram_shopUrl' ">
+				AND (name LIKE '%' || #{search_data} || '%' OR instagram LIKE '%' || #{search_data} || '%' OR shopUrl LIKE '%' || #{search_data} || '%')
+			</when>
+			<when test="search_option != null and search_option != '' and search_data != null and search_data != '' ">
+				AND (${search_option} LIKE '%' || #{search_data} || '%')
+			</when>
+			<otherwise>
+				AND no > '0'
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<select id="getAllRowsCount" resultType="int">
+		SELECT COUNT(*) FROM ${SHOP_INFO} WHERE 1=1
+		<include refid="search"></include>
+	</select>
 </mapper>

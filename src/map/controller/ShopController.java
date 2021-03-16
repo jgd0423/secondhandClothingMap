@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -115,7 +116,7 @@ public class ShopController extends HttpServlet {
 			int startNum = pagerArr[4];
 			int endNum = pagerArr[5];
 			
-			ArrayList<ShopInfoDTO> list = dao.getPagingList(startNum, endNum, search_option, search_data);
+			List<ShopInfoDTO> list = dao.getPagingList(startNum, endNum, search_option, search_data);
 			
 			request.setAttribute("menu_gubun", "shop_list");
 			request.setAttribute("list", list);

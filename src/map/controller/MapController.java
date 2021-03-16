@@ -66,7 +66,7 @@ public class MapController extends HttpServlet {
 		ShopInfoDTO dto = new ShopInfoDTO();
 		
 		if (url.indexOf("map.do") != -1) {
-			List<ShopInfoDTO> allShopInfos = dao.getAllShopInfos();
+			List<ShopInfoDTO> allShopInfos = dao.getShopInfos();
 			
 			
 			String page = "/map/map.jsp";

@@ -66,43 +66,53 @@ public class ShopInfoDAO {
 	}
 
 	public int getAllRowsCount(String search_option, String search_data) {
-		conn = getConn();
-		int allRowsCount = 0;
-		try {
-			String sql = "SELECT COUNT(*) FROM " + SHOP_INFO + " WHERE no > 0 ";
-			
-			if (search_option.length() > 0 && search_data.length() > 0) {
-				if (search_option.equals("name") || search_option.equals("instagram") || search_option.equals("shopUrl")) {
-					sql += " AND " + search_option + " LIKE ? ";
-				} else if (search_option.equals("name_instagram_shopUrl")) {
-					sql += " and (name LIKE ? OR instagram LIKE ? OR shopUrl LIKE ?) ";
-				}
-			}
-			
-			int pstmtNum = 0;
-			pstmt = conn.prepareStatement(sql);
-			
-			if (search_option.length() > 0 && search_data.length() > 0) {
-				if (search_option.equals("name") || search_option.equals("instagram") || search_option.equals("shopUrl")) {
-					pstmt.setString(++pstmtNum, '%' + search_data + '%');
-				} else if (search_option.equals("name_instagram_shopUrl")) {
-					pstmt.setString(++pstmtNum, '%' + search_data + '%');
-					pstmt.setString(++pstmtNum, '%' + search_data + '%');
-					pstmt.setString(++pstmtNum, '%' + search_data + '%');
-				}
-			}
-			
-			rs = pstmt.executeQuery();
-			if (rs.next()) {
-				allRowsCount = rs.getInt(1);
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			getConnClose(rs, pstmt, conn);
-		}
+		Map<String, String> map = new HashMap<>();
+		map.put("search_option", search_option);
+		map.put("search_data", search_data);
+		map.put("SHOP_INFO", SHOP_INFO);
 		
-		return allRowsCount;
+		SqlSession session = MybatisManager.getInstance().openSession();
+		int result = session.selectOne("member.getAllRowsCount", map);
+		session.close();
+		return result;
+		
+//		conn = getConn();
+//		int allRowsCount = 0;
+//		try {
+//			String sql = "SELECT COUNT(*) FROM " + SHOP_INFO + " WHERE no > 0 ";
+//			
+//			if (search_option.length() > 0 && search_data.length() > 0) {
+//				if (search_option.equals("name") || search_option.equals("instagram") || search_option.equals("shopUrl")) {
+//					sql += " AND " + search_option + " LIKE ? ";
+//				} else if (search_option.equals("name_instagram_shopUrl")) {
+//					sql += " and (name LIKE ? OR instagram LIKE ? OR shopUrl LIKE ?) ";
+//				}
+//			}
+//			
+//			int pstmtNum = 0;
+//			pstmt = conn.prepareStatement(sql);
+//			
+//			if (search_option.length() > 0 && search_data.length() > 0) {
+//				if (search_option.equals("name") || search_option.equals("instagram") || search_option.equals("shopUrl")) {
+//					pstmt.setString(++pstmtNum, '%' + search_data + '%');
+//				} else if (search_option.equals("name_instagram_shopUrl")) {
+//					pstmt.setString(++pstmtNum, '%' + search_data + '%');
+//					pstmt.setString(++pstmtNum, '%' + search_data + '%');
+//					pstmt.setString(++pstmtNum, '%' + search_data + '%');
+//				}
+//			}
+//			
+//			rs = pstmt.executeQuery();
+//			if (rs.next()) {
+//				allRowsCount = rs.getInt(1);
+//			}
+//		} catch(Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			getConnClose(rs, pstmt, conn);
+//		}
+//		
+//		return allRowsCount;
 	}
 
 	public ArrayList<ShopInfoDTO> getPagingList(int startNum, int endNum, String search_option, String search_data) {
@@ -256,7 +266,7 @@ public class ShopInfoDAO {
 		return result;
 	}
 
-	public ArrayList<ShopInfoDTO> getAllShopInfos() {
+	public ArrayList<ShopInfoDTO> getShopInfos() {
 		conn = getConn();
 		ArrayList<ShopInfoDTO> list = new ArrayList<>();
 		try {
