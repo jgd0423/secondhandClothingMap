@@ -71,9 +71,12 @@ public class MapController extends HttpServlet {
 		ShopInfoDTO dto = new ShopInfoDTO();
 		
 		if (url.indexOf("map.do") != -1) {
+			double distance = 0.2;
 			MapService service = new MapService();
-			JSONArray shopInfos = service.getShopData();
+			JSONArray shopInfos = service.getShopData(distance);
+			
 			request.setAttribute("shopInfos", shopInfos);
+			request.setAttribute("defaultDistance", distance);
 			
 			String page = "/map/map.jsp";
 			RequestDispatcher rd = request.getRequestDispatcher(page);

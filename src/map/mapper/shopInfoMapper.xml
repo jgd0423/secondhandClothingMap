@@ -5,7 +5,23 @@ PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
 
 <mapper namespace="shopInfo">
 	<insert id="setInsert" parameterType="map.model.dto.ShopInfoDTO">
-		INSERT INTO shopInfo VALUES ('3', #{id}, #{latitude}, #{longitude}, #{shopName}, #{instagram}, #{address}, #{shopUrl}, SYSDATE)
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			SELECT seq_shopInfo.NEXTVAL FROM dual
+		</selectKey>
+		INSERT INTO ${SHOP_INFO} (
+			no, id, latitude, longitude, shopName, instagram, address, shopUrl, regiDate
+		) 
+		VALUES (
+			#{no}, 
+			#{dto.id}, 
+			#{dto.latitude}, 
+			#{dto.longitude}, 
+			#{dto.shopName}, 
+			#{dto.instagram}, 
+			#{dto.address}, 
+			#{dto.shopUrl}, 
+			SYSDATE
+		)
 	</insert>
 	
 	<sql id="search">

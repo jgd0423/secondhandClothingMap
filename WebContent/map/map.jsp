@@ -21,7 +21,9 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
           <button class="distance">400</button>
         </div>
         <br />
-        <button id="btnWrite" onclick="goWrite()">자료입력</button>
+        <button id="btnWrite" name="btnWrite" onclick="goWrite()">
+          자료입력
+        </button>
       </div>
     </div>
 
@@ -34,6 +36,7 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
       const container = document.getElementById('map');
       let options = {};
       let map = null;
+      let distance = '${defaultDistance}';
 
       const dbShopInfos = JSON.parse('${shopInfos}');
 
@@ -54,8 +57,12 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         init();
       });
 
-      function drawCircle(lat, lng) {
-        const center = new kakao.maps.LatLng(lat, lng);
+      function drawCircle(currentLocation) {
+        const center = new kakao.maps.LatLng(
+          currentLocation.getLat(),
+          currentLocation.getLng()
+        );
+        console.log(center);
         const radius = distance;
         var circle = new kakao.maps.Circle({
           center: center, // 원의 중심좌표 입니다
@@ -72,18 +79,19 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         circle.setMap(map);
       }
 
-      function setCurrentLocationMarker(currentLocation) {
-        const markerPosition = currentLocation;
-        const marker = new kakao.maps.Marker({
-          position: currentLocation,
-        });
-
-        marker.setMap(map);
-
-        const spanLat = document.querySelector('#latitude');
-        const spanLng = document.querySelector('#longitude');
-        spanLat.textContent = currentLocation.getLat();
-        spanLng.textContent = currentLocation.getLng();
+      function setMarkers(lat, lng) {
+        const currentLatLng = setCurrentLocationMarker(lat, lng);
+        for (let i = 0; i < shopInpos.length; i++) {
+          const polyline = getPolylineBetweenMarkers(
+            currentLatLng,
+            shopInpos[i].latlng
+          );
+          const distanceBetweenMeAndShop = polyline.getLength();
+          if (distanceBetweenMeAndShop <= distance) {
+            polyline.setMap(map);
+            setShopMarkers(shopInpos[i]);
+          }
+        }
       }
 
       function setShopMarkers(latlngObj) {
@@ -108,19 +116,18 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         marker.setMap(map);
       }
 
-      function setMarkers(lat, lng) {
-        const currentLatLng = setCurrentLocationMarker(lat, lng);
-        for (let i = 0; i < shopInpos.length; i++) {
-          const polyline = getPolylineBetweenMarkers(
-            currentLatLng,
-            shopInpos[i].latlng
-          );
-          const distanceBetweenMeAndShop = polyline.getLength();
-          if (distanceBetweenMeAndShop <= distance) {
-            polyline.setMap(map);
-            setShopMarkers(shopInpos[i]);
-          }
-        }
+      function setCurrentLocationMarker(currentLocation) {
+        const markerPosition = currentLocation;
+        const marker = new kakao.maps.Marker({
+          position: currentLocation,
+        });
+
+        marker.setMap(map);
+
+        const spanLat = document.querySelector('#latitude');
+        const spanLng = document.querySelector('#longitude');
+        spanLat.textContent = currentLocation.getLat();
+        spanLng.textContent = currentLocation.getLng();
       }
 
       function initMap(currentLocation) {
@@ -130,7 +137,13 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         };
         map = new kakao.maps.Map(container, options);
 
+        // 현재 위치 마커 표시
         setCurrentLocationMarker(currentLocation);
+
+        // 현재 위치 기준 원 표시
+        drawCircle(currentLocation);
+
+        // 가게 마커 표시
         for (let i = 0; i < shopInfos.length; i++) {
           setShopMarkers(shopInfos[i]);
         }

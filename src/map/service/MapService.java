@@ -9,13 +9,13 @@ import map.model.dao.ShopInfoDAO;
 import map.model.dto.ShopInfoDTO;
 
 public class MapService {
-	public JSONArray getShopData() {
+	public JSONArray getShopData(double distance) {
 		ShopInfoDAO dao = new ShopInfoDAO();
-		List<ShopInfoDTO> allShopInfos = dao.getShopInfos();
+		List<ShopInfoDTO> shopInfosByDistance = dao.getShopInfos(distance);
 		
 		JSONArray shopInfos = new JSONArray();
 		
-		for (ShopInfoDTO dto : allShopInfos) {
+		for (ShopInfoDTO dto : shopInfosByDistance) {
 			JSONObject shopInfo = new JSONObject();
 			shopInfo.put("title", dto.getShopName());
 			shopInfo.put("lat", dto.getLatitude());

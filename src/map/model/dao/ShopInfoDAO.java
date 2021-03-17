@@ -33,36 +33,37 @@ public class ShopInfoDAO {
 	}
 
 	public int setInsert(ShopInfoDTO dto) {
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("dto", dto);
-//		map.put("SHOP_INFO", SHOP_INFO);
+		Map<String, Object> map = new HashMap<>();
+		map.put("dto", dto);
+		map.put("SHOP_INFO", SHOP_INFO);
 		
-//		SqlSession session = MybatisManager.getInstance().openSession();
-//		int result = session.insert("shopInfo.setInsert", dto);
-//		session.close();
-//		System.out.println(result);
-//		return result;
-		
-		conn = getConn();
-		int result = 0;
-		try {
-			String sql = "INSERT INTO " + SHOP_INFO + " VALUES (seq_shopInfo.NEXTVAL, "
-					+ "?, ?, ?, ?, ?, ?, ?, SYSDATE)";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, dto.getId());
-			pstmt.setDouble(2, dto.getLatitude());
-			pstmt.setDouble(3, dto.getLongitude());
-			pstmt.setString(4, dto.getShopName());
-			pstmt.setString(5, dto.getInstagram());
-			pstmt.setString(6, dto.getAddress());
-			pstmt.setString(7, dto.getShopUrl());
-			result = pstmt.executeUpdate();
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			getConnClose(rs, pstmt, conn);
-		}
+		SqlSession session = MybatisManager.getInstance().openSession();
+		int result = session.insert("shopInfo.setInsert", map);
+		session.commit();
+		session.close();
+
 		return result;
+		
+//		conn = getConn();
+//		int result = 0;
+//		try {
+//			String sql = "INSERT INTO " + SHOP_INFO + " VALUES (seq_shopInfo.NEXTVAL, "
+//					+ "?, ?, ?, ?, ?, ?, ?, SYSDATE)";
+//			pstmt = conn.prepareStatement(sql);
+//			pstmt.setString(1, dto.getId());
+//			pstmt.setDouble(2, dto.getLatitude());
+//			pstmt.setDouble(3, dto.getLongitude());
+//			pstmt.setString(4, dto.getShopName());
+//			pstmt.setString(5, dto.getInstagram());
+//			pstmt.setString(6, dto.getAddress());
+//			pstmt.setString(7, dto.getShopUrl());
+//			result = pstmt.executeUpdate();
+//		} catch(Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			getConnClose(rs, pstmt, conn);
+//		}
+//		return result;
 	}
 
 	public int getAllRowsCount(String search_option, String search_data) {
@@ -182,8 +183,9 @@ public class ShopInfoDAO {
 		return result;
 	}
 
-	public List<ShopInfoDTO> getShopInfos() {
-		Map<String, String> map = new HashMap<>();
+	public List<ShopInfoDTO> getShopInfos(double distance) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("distance", distance);
 		map.put("SHOP_INFO", SHOP_INFO);
 		
 		SqlSession session = MybatisManager.getInstance().openSession();
