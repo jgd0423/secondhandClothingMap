@@ -183,8 +183,10 @@ public class ShopInfoDAO {
 		return result;
 	}
 
-	public List<ShopInfoDTO> getShopInfos(double distance) {
+	public List<ShopInfoDTO> getShopInfos(Double currentLat, Double currentLng, Double distance) {
 		Map<String, Object> map = new HashMap<>();
+		map.put("currentLat", currentLat);
+		map.put("currentLng", currentLng);
 		map.put("distance", distance);
 		map.put("SHOP_INFO", SHOP_INFO);
 		

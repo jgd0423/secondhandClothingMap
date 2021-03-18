@@ -71,14 +71,34 @@ public class MapController extends HttpServlet {
 		ShopInfoDTO dto = new ShopInfoDTO();
 		
 		if (url.indexOf("map.do") != -1) {
-			double distance = 0.2;
+			Double distance = 0.0;
+			Double currentLat = 0.0;
+			Double currentLng = 0.0;
+			
+			String distance_ = request.getParameter("distance");
+			String currentLat_ = request.getParameter("currentLat");
+			String currentLng_ = request.getParameter("currentLng");
+			
+			if (distance_ != null) {
+				distance = Double.parseDouble(distance_) / 1000;
+			}
+			
+			if (currentLat_ != null) {
+				currentLat = Double.parseDouble(currentLat_);
+			}
+			
+			if (currentLng_ != null) {
+				currentLng = Double.parseDouble(currentLng_);
+			}
+			
 			MapService service = new MapService();
-			JSONArray shopInfos = service.getShopData(distance);
+			JSONArray shopInfos = service.getShopData(currentLat, currentLng, distance);
 			
 			request.setAttribute("shopInfos", shopInfos);
-			request.setAttribute("defaultDistance", distance);
 			
 			String page = "/map/map.jsp";
+			
+			request.setAttribute("distance", distance);
 			RequestDispatcher rd = request.getRequestDispatcher(page);
 			rd.forward(request, response);
 			

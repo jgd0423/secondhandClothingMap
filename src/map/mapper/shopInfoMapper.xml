@@ -54,7 +54,19 @@ PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
 	</select>
 	
 	<select id="getShopInfos" resultType="map.model.dto.ShopInfoDTO">
-		SELECT * FROM ${SHOP_INFO} WHERE 1=1
-		ORDER BY no DESC
+		<choose>
+			<when test="distance == 0.0 ">
+				SELECT * FROM ${SHOP_INFO} WHERE 1=1
+				ORDER BY no DESC
+			</when>
+			<otherwise>
+				SELECT * FROM (
+				SELECT shopInfo.*, DISTANCE_WGS84(#{currentLat}, #{currentLng}, latitude, longitude) AS DISTANCE
+				<![CDATA[
+				FROM shopInfo) WHERE DISTANCE <= #{distance} ORDER BY no DESC
+				]]>
+			</otherwise>
+		</choose>
+		
 	</select>
 </mapper>

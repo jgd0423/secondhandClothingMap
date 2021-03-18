@@ -48,6 +48,16 @@ delete shopinfo where no = 3;
 commit;
 
 
+-- 위도, 경도, 위도, 경도 입력
+select DISTNACE_WGS84(35.86120949251559, 128.59938944544942, 35.8609641990886, 128.598161214173) from dual;
+
+
+
+select * from (
+select shopInfo.*, DISTANCE_WGS84(35.86120949251559, 128.59938944544942, latitude, longitude) as DISTANCE
+from shopInfo) where distance <= 0.4 order by no desc;
+
+
 CREATE OR REPLACE FUNCTION RADIANS(nDegrees IN NUMBER) 
 RETURN NUMBER DETERMINISTIC 
 IS
@@ -59,23 +69,14 @@ BEGIN
   RETURN nDegrees / 57.29577951308232087679815481410517033235;
 END RADIANS;
  
-create or replace function DISTNACE_WGS84(H_LAT in number, H_LNG in number, T_LAT in number, T_LNG in number)
+create or replace function DISTANCE_WGS84(H_LAT in number, H_LNG in number, T_LAT in number, T_LNG in number)
 return number deterministic
 is
 begin
   return (6371.0 * acos(  
-          cos(radians(H_LAT)) * cos(radians(T_LAT /* 위도 */))
-          * cos(radians(T_LNG /* 경도 */) - radians(H_LNG))
+          cos(radians(H_LAT)) * cos(radians(T_LAT))
+          * cos(radians(T_LNG) - radians(H_LNG))
           +
-          sin(radians(H_LAT))  *sin(radians(T_LAT /* 위도 */))        
+          sin(radians(H_LAT))  *sin(radians(T_LAT))        
          ));
-end DISTNACE_WGS84;
-
--- 위도, 경도, 위도, 경도 입력
-select DISTNACE_WGS84(35.86120949251559, 128.59938944544942, 35.8609641990886, 128.598161214173) from dual;
-
-
-
-select * from (
-select shopInfo.*, DISTNACE_WGS84(35.86120949251559, 128.59938944544942, latitude, longitude) as DISTANCE
-from shopInfo) where distance <= 0.4 order by no desc;
+end DISTANCE_WGS84;

@@ -36,7 +36,7 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
       const container = document.getElementById('map');
       let options = {};
       let map = null;
-      let distance = '${defaultDistance}';
+      let distance = Number('${distance}') * 1000;
 
       const dbShopInfos = JSON.parse('${shopInfos}');
 
@@ -54,18 +54,21 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
       const distanceBtn = document.querySelector('#buttonContainer');
       distanceBtn.addEventListener('click', (e) => {
         distance = e.target.innerText;
-        init();
+        const currentLat = document.querySelector('#latitude').innerText;
+        const currentLng = document.querySelector('#longitude').innerText;
+        let url = '';
+        url += '${path}/map_servlet/map.do?';
+        url += 'distance=' + distance;
+        url += '&currentLat=' + currentLat;
+        url += '&currentLng=' + currentLng;
+
+        location.href = url;
       });
 
       function drawCircle(currentLocation) {
-        const center = new kakao.maps.LatLng(
-          currentLocation.getLat(),
-          currentLocation.getLng()
-        );
-        console.log(center);
         const radius = distance;
         var circle = new kakao.maps.Circle({
-          center: center, // 원의 중심좌표 입니다
+          center: currentLocation, // 원의 중심좌표 입니다
           radius: radius, // 미터 단위의 원의 반지름입니다
           strokeWeight: 3, // 선의 두께입니다
           strokeColor: '#75B8FA', // 선의 색깔입니다
@@ -140,12 +143,14 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         // 현재 위치 마커 표시
         setCurrentLocationMarker(currentLocation);
 
-        // 현재 위치 기준 원 표시
-        drawCircle(currentLocation);
-
         // 가게 마커 표시
         for (let i = 0; i < shopInfos.length; i++) {
           setShopMarkers(shopInfos[i]);
+        }
+
+        // 원 표시
+        if (distance > 0) {
+          drawCircle(currentLocation);
         }
       }
 
