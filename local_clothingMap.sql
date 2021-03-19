@@ -57,7 +57,6 @@ select * from (
 select shopInfo.*, DISTANCE_WGS84(35.86120949251559, 128.59938944544942, latitude, longitude) as DISTANCE
 from shopInfo) where distance <= 0.4 order by no desc;
 
-
 CREATE OR REPLACE FUNCTION RADIANS(nDegrees IN NUMBER) 
 RETURN NUMBER DETERMINISTIC 
 IS

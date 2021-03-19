@@ -24,6 +24,7 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         <button id="btnWrite" name="btnWrite" onclick="goWrite()">
           자료입력
         </button>
+        <img src="${path}/attach/image/currentLocation.svg"/>
       </div>
     </div>
 
