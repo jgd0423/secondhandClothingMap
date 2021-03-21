@@ -5,13 +5,32 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Map</title>
+    <title>secondhand map</title>
+    <style>
+      #map {
+        width: 100%;
+        position: relative;
+      }
+      #currentLocation {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 2;
+      }
+    </style>
   </head>
 
   <body>
     <div id="container" style="display: flex">
-      <div id="map" style="width: 1000px; height: 900px"></div>
-      <div style="padding-left: 20px">
+      <div id="map" style="width: 900px; height: 750px">
+        <button id="currentLocation" style="padding: 4px" type="button">
+          <img
+            style="width: 30px"
+            src="${path}/attach/image/currentLocation.svg"
+          />
+        </button>
+      </div>
+      <div id="info_wrap" style="padding-left: 20px">
         현재 위도 : <span id="latitude"></span>
         <br />
         현재 경도 : <span id="longitude"></span>
@@ -24,7 +43,6 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         <button id="btnWrite" name="btnWrite" onclick="goWrite()">
           자료입력
         </button>
-        <img src="${path}/attach/image/currentLocation.svg"/>
       </div>
     </div>
 
@@ -54,16 +72,18 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
 
       const distanceBtn = document.querySelector('#buttonContainer');
       distanceBtn.addEventListener('click', (e) => {
-        distance = e.target.innerText;
-        const currentLat = document.querySelector('#latitude').innerText;
-        const currentLng = document.querySelector('#longitude').innerText;
-        let url = '';
-        url += '${path}/map_servlet/map.do?';
-        url += 'distance=' + distance;
-        url += '&currentLat=' + currentLat;
-        url += '&currentLng=' + currentLng;
+        if (e.target.classList.contains('distance')) {
+          distance = e.target.innerText;
+          const currentLat = document.querySelector('#latitude').innerText;
+          const currentLng = document.querySelector('#longitude').innerText;
+          let url = '';
+          url += '${path}/map_servlet/map.do?';
+          url += 'distance=' + distance;
+          url += '&currentLat=' + currentLat;
+          url += '&currentLng=' + currentLng;
 
-        location.href = url;
+          location.href = url;
+        }
       });
 
       function drawCircle(currentLocation) {
