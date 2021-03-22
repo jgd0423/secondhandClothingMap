@@ -17,9 +17,14 @@ public class MapService {
 		
 		for (ShopInfoDTO dto : shopInfosByDistance) {
 			JSONObject shopInfo = new JSONObject();
-			shopInfo.put("title", dto.getShopName());
+			shopInfo.put("no", dto.getNo());
+			shopInfo.put("id", dto.getId());
 			shopInfo.put("lat", dto.getLatitude());
 			shopInfo.put("lng", dto.getLongitude());
+			shopInfo.put("title", dto.getShopName());
+			shopInfo.put("instagram", dto.getInstagram());
+			shopInfo.put("address", dto.getAddress());
+			shopInfo.put("shopUrl", dto.getShopUrl());
 			shopInfos.add(shopInfo);
 		}
 		

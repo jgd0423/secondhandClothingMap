@@ -55,7 +55,7 @@ select DISTNACE_WGS84(35.86120949251559, 128.59938944544942, 35.8609641990886, 1
 
 select * from (
 select shopInfo.*, DISTANCE_WGS84(35.86120949251559, 128.59938944544942, latitude, longitude) as DISTANCE
-from shopInfo) where distance <= 0.4 order by no desc;
+from shopInfo);
 
 CREATE OR REPLACE FUNCTION RADIANS(nDegrees IN NUMBER) 
 RETURN NUMBER DETERMINISTIC 
@@ -76,6 +76,6 @@ begin
           cos(radians(H_LAT)) * cos(radians(T_LAT))
           * cos(radians(T_LNG) - radians(H_LNG))
           +
-          sin(radians(H_LAT))  *sin(radians(T_LAT))        
+          sin(radians(H_LAT)) * sin(radians(T_LAT))        
          ));
 end DISTANCE_WGS84;
