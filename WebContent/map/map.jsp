@@ -6,7 +6,15 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
   <head>
     <meta charset="UTF-8" />
     <title>secondhand map</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+    />
     <style>
+      * {
+        box-sizing: border-box;
+      }
+
       #map {
         width: 100%;
         position: relative;
@@ -233,21 +241,6 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         // 지도에 원을 표시합니다
         circle.setMap(map);
       }
-
-      // function setMarkers(lat, lng) {
-      //   const currentLatLng = setCurrentLocationMarker(lat, lng);
-      //   for (let i = 0; i < shopInpos.length; i++) {
-      //     const polyline = getPolylineBetweenMarkers(
-      //       currentLatLng,
-      //       shopInpos[i].latlng
-      //     );
-      //     const distanceBetweenMeAndShop = polyline.getLength();
-      //     if (distanceBetweenMeAndShop <= distance) {
-      //       polyline.setMap(map);
-      //       setShopMarkers(shopInpos[i]);
-      //     }
-      //   }
-      // }
 
       function setShopMarkers(latlngObj) {
         // 마커 이미지의 이미지 주소입니다
