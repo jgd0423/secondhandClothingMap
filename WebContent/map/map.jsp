@@ -10,119 +10,11 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
     />
-    <style>
-      * {
-        box-sizing: border-box;
-      }
-
-      #map {
-        width: 100%;
-        position: relative;
-      }
-
-      .btnInfo {
-        position: absolute;
-        z-index: 2;
-      }
-
-      #btnCurrentLocation {
-        padding: 4px;
-        top: 20px;
-        right: 20px;
-      }
-
-      #btnAll {
-        padding: 4px;
-        width: 42px;
-        height: 42px;
-        top: 70px;
-        right: 20px;
-      }
-
-      /* 커스텀 오버레이 */
-      .wrap {
-        position: absolute;
-        left: 0;
-        bottom: 40px;
-        width: 288px;
-        height: 132px;
-        margin-left: -144px;
-        text-align: left;
-        overflow: hidden;
-        font-size: 12px;
-        font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
-        line-height: 1.5;
-      }
-      .wrap * {
-        padding: 0;
-        margin: 0;
-      }
-      .wrap .info {
-        width: 286px;
-        height: 120px;
-        border-radius: 5px;
-        border-bottom: 2px solid #ccc;
-        border-right: 1px solid #ccc;
-        overflow: hidden;
-        background: #fff;
-      }
-      .wrap .info:nth-child(1) {
-        border: 0;
-        box-shadow: 0px 1px 2px #888;
-      }
-      .info .title {
-        padding: 5px 0 0 10px;
-        height: 30px;
-        background: #eee;
-        border-bottom: 1px solid #ddd;
-        font-size: 18px;
-        font-weight: bold;
-      }
-      .info .close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        color: #888;
-        width: 17px;
-        height: 17px;
-        background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');
-      }
-      .info .close:hover {
-        cursor: pointer;
-      }
-      .info .body {
-        position: relative;
-        overflow: hidden;
-      }
-      .info .desc {
-        position: relative;
-        margin: 13px 0 0 20px;
-        height: 75px;
-      }
-      .desc .ellipsis {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .info:after {
-        content: '';
-        position: absolute;
-        margin-left: -12px;
-        left: 50%;
-        bottom: 0;
-        width: 22px;
-        height: 12px;
-        background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png');
-      }
-      .info .link {
-        color: #5085bb;
-      }
-    </style>
+    <link rel="stylesheet" href="${path}/map/map.css" type="text/css" />
   </head>
-
   <body>
-    <div id="container" style="display: flex">
-      <div id="map" style="width: 900px; height: 1000px">
+    <div class="map-container">
+      <div id="map">
         <button
           class="btnInfo"
           id="btnCurrentLocation"
@@ -136,7 +28,9 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         </button>
         <button class="btnInfo" id="btnAll">ALL</button>
       </div>
-      <div id="info_wrap" style="padding-left: 20px">
+    </div>
+    <div class="shop-container">
+      <div id="infoWrap">
         현재 위도 : <span id="latitude"></span>
         <br />
         현재 경도 : <span id="longitude"></span>
@@ -148,6 +42,12 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         <br />
         <button id="btnWrite" name="btnWrite">자료입력</button>
       </div>
+      <!-- 동적으로 생성해야함 -->
+      <section class="shop"></section>
+      <section class="shop"></section>
+      <section class="shop"></section>
+      <section class="shop"></section>
+      <section class="shop"></section>
     </div>
 
     <script
@@ -225,44 +125,7 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         location.href = '${path}/shop_servlet/write.do';
       }
 
-      function drawCircle(currentLocation) {
-        const radius = distance;
-        var circle = new kakao.maps.Circle({
-          center: currentLocation, // 원의 중심좌표 입니다
-          radius: radius, // 미터 단위의 원의 반지름입니다
-          strokeWeight: 3, // 선의 두께입니다
-          strokeColor: '#75B8FA', // 선의 색깔입니다
-          strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-          strokeStyle: 'dashed', // 선의 스타일입니다
-          fillColor: '#CFE7FF', // 채우기 색깔입니다
-          fillOpacity: 0.5, // 채우기 불투명도입니다
-        });
-
-        // 지도에 원을 표시합니다
-        circle.setMap(map);
-      }
-
-      function setShopMarkers(latlngObj) {
-        // 마커 이미지의 이미지 주소입니다
-        const imageSrc =
-          'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
-
-        // 마커 이미지의 이미지 크기 입니다
-        const imageSize = new kakao.maps.Size(24, 35);
-
-        // 마커 이미지를 생성합니다
-        const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-        // 마커를 생성합니다
-        const marker = new kakao.maps.Marker({
-          map: map, // 마커를 표시할 지도
-          position: latlngObj.latlng, // 마커를 표시할 위치
-          title: latlngObj.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-          image: markerImage, // 마커 이미지
-        });
-
-        marker.setMap(map);
-
+      function setShopOverlays(marker, latlngObj) {
         let content = '';
         content += '<div class="wrap">';
         content += '<div class="info">';
@@ -310,6 +173,47 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
           const objId = latlngObj.id;
           overlayObjs[objId] = overlay;
         });
+      }
+
+      function drawCircle(currentLocation) {
+        const radius = distance;
+        var circle = new kakao.maps.Circle({
+          center: currentLocation, // 원의 중심좌표 입니다
+          radius: radius, // 미터 단위의 원의 반지름입니다
+          strokeWeight: 3, // 선의 두께입니다
+          strokeColor: '#75B8FA', // 선의 색깔입니다
+          strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+          strokeStyle: 'dashed', // 선의 스타일입니다
+          fillColor: '#CFE7FF', // 채우기 색깔입니다
+          fillOpacity: 0.5, // 채우기 불투명도입니다
+        });
+
+        // 지도에 원을 표시합니다
+        circle.setMap(map);
+      }
+
+      function setShopMarkers(latlngObj) {
+        // 마커 이미지의 이미지 주소입니다
+        const imageSrc =
+          'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
+
+        // 마커 이미지의 이미지 크기 입니다
+        const imageSize = new kakao.maps.Size(24, 35);
+
+        // 마커 이미지를 생성합니다
+        const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+        // 마커를 생성합니다
+        const marker = new kakao.maps.Marker({
+          map: map, // 마커를 표시할 지도
+          position: latlngObj.latlng, // 마커를 표시할 위치
+          title: latlngObj.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+          image: markerImage, // 마커 이미지
+        });
+
+        marker.setMap(map);
+
+        setShopOverlays(marker, latlngObj);
       }
 
       function setCurrentLocationMarker(currentLocation) {
