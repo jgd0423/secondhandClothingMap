@@ -43,11 +43,54 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         <button id="btnWrite" name="btnWrite">자료입력</button>
       </div>
       <!-- 동적으로 생성해야함 -->
-      <section class="shop"></section>
-      <section class="shop"></section>
-      <section class="shop"></section>
-      <section class="shop"></section>
-      <section class="shop"></section>
+      <section class="shop">
+        <div class="shop-wrapper">
+          <div class="shop__header"><h4>name</h4></div>
+          <div class="img-container"><p>photo</p></div>
+        </div>
+      </section>
+      <section class="shop">
+        <div class="shop-wrapper">
+          <div class="shop__header"><h4>name</h4></div>
+          <div class="img-container"><p>photo</p></div>
+        </div>
+      </section>
+      <section class="shop">
+        <div class="shop-wrapper">
+          <div class="shop__header"><h4>name</h4></div>
+          <div class="img-container"><p>photo</p></div>
+        </div>
+      </section>
+      <section class="shop">
+        <div class="shop-wrapper">
+          <div class="shop__header"><h4>name</h4></div>
+          <div class="img-container"><p>photo</p></div>
+        </div>
+      </section>
+      <section class="shop">
+        <div class="shop-wrapper">
+          <div class="shop__header"><h4>name</h4></div>
+          <div class="img-container"><p>photo</p></div>
+        </div>
+      </section>
+      <section class="shop">
+        <div class="shop-wrapper">
+          <div class="shop__header"><h4>name</h4></div>
+          <div class="img-container"><p>photo</p></div>
+        </div>
+      </section>
+      <section class="shop">
+        <div class="shop-wrapper">
+          <div class="shop__header"><h4>name</h4></div>
+          <div class="img-container"><p>photo</p></div>
+        </div>
+      </section>
+      <section class="shop">
+        <div class="shop-wrapper">
+          <div class="shop__header"><h4>name</h4></div>
+          <div class="img-container"><p>photo</p></div>
+        </div>
+      </section>
     </div>
 
     <script
