@@ -56,14 +56,14 @@ PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
 	<select id="getShopInfos" resultType="map.model.dto.ShopInfoDTO">
 		<choose>
 			<when test="distance == 0.0 ">
-				SELECT * FROM ${SHOP_INFO} WHERE 1=1
-				ORDER BY no DESC
+				SELECT * FROM ${SHOP_INFO} WHERE 1=1 
+				ORDER BY DBMS_RANDOM.RANDOM()
 			</when>
 			<otherwise>
 				SELECT * FROM (
 				SELECT shopInfo.*, DISTANCE_WGS84(#{currentLat}, #{currentLng}, latitude, longitude) AS DISTANCE
 				<![CDATA[
-				FROM shopInfo) WHERE DISTANCE <= #{distance} ORDER BY no DESC
+				FROM shopInfo) WHERE DISTANCE <= #{distance} ORDER BY DBMS_RANDOM.RANDOM()
 				]]>
 			</otherwise>
 		</choose>

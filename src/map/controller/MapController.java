@@ -93,9 +93,18 @@ public class MapController extends HttpServlet {
 			
 			MapService service = new MapService();
 			JSONArray shopInfos = service.getShopData(currentLat, currentLng, distance);
+			String[] backgroundColors = { "#AACFD0", "#A0D097", "#FFFCCB", "#FFA54E" };
+			
+			for (int i = 0; i < shopInfos.size(); i++) {
+				JSONObject shopInfo = (JSONObject) shopInfos.get(i);
+				int j = i;
+				if (j > 3) {
+					j = j % 4;
+				}
+				shopInfo.put("backgroundColor", backgroundColors[j]);
+			}
 			
 			request.setAttribute("shopInfos", shopInfos);
-			
 			String page = "/map/map.jsp";
 			
 			request.setAttribute("distance", distance);

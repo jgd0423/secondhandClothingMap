@@ -42,55 +42,22 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         <br />
         <button id="btnWrite" name="btnWrite">자료입력</button>
       </div>
-      <!-- 동적으로 생성해야함 -->
-      <section class="shop">
-        <div class="shop-wrapper">
-          <div class="shop__header"><h4>name</h4></div>
-          <div class="img-container"><p>photo</p></div>
-        </div>
-      </section>
-      <section class="shop">
-        <div class="shop-wrapper">
-          <div class="shop__header"><h4>name</h4></div>
-          <div class="img-container"><p>photo</p></div>
-        </div>
-      </section>
-      <section class="shop">
-        <div class="shop-wrapper">
-          <div class="shop__header"><h4>name</h4></div>
-          <div class="img-container"><p>photo</p></div>
-        </div>
-      </section>
-      <section class="shop">
-        <div class="shop-wrapper">
-          <div class="shop__header"><h4>name</h4></div>
-          <div class="img-container"><p>photo</p></div>
-        </div>
-      </section>
-      <section class="shop">
-        <div class="shop-wrapper">
-          <div class="shop__header"><h4>name</h4></div>
-          <div class="img-container"><p>photo</p></div>
-        </div>
-      </section>
-      <section class="shop">
-        <div class="shop-wrapper">
-          <div class="shop__header"><h4>name</h4></div>
-          <div class="img-container"><p>photo</p></div>
-        </div>
-      </section>
-      <section class="shop">
-        <div class="shop-wrapper">
-          <div class="shop__header"><h4>name</h4></div>
-          <div class="img-container"><p>photo</p></div>
-        </div>
-      </section>
-      <section class="shop">
-        <div class="shop-wrapper">
-          <div class="shop__header"><h4>name</h4></div>
-          <div class="img-container"><p>photo</p></div>
-        </div>
-      </section>
+      <c:forEach var="shopObj" items="${shopInfos }">
+        <section
+          class="shop"
+          style="background-color: ${shopObj.backgroundColor}"
+        >
+          <div class="shop-wrapper">
+            <div
+              class="shop__header"
+              onclick="goShopLoc(${shopObj.lat}, ${shopObj.lng})"
+            >
+              <h4>${shopObj.title }</h4>
+            </div>
+            <div class="img-container"><p>photo</p></div>
+          </div>
+        </section>
+      </c:forEach>
     </div>
 
     <script
@@ -164,6 +131,13 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         location.href = url;
       });
 
+      function goShopLoc(lat, lng) {
+        const currentLocation = new kakao.maps.LatLng(lat, lng);
+        initMap(currentLocation);
+      }
+
+      function goShopSection(latlngObj) {}
+
       function goWrite() {
         location.href = '${path}/shop_servlet/write.do';
       }
@@ -215,6 +189,7 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
           overlay.setMap(map);
           const objId = latlngObj.id;
           overlayObjs[objId] = overlay;
+          goShopSection(latlngObj);
         });
       }
 
@@ -280,9 +255,6 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         };
         map = new kakao.maps.Map(container, options);
 
-        // 현재 위치 마커 표시
-        setCurrentLocationMarker(currentLocation);
-
         // 가게 마커 표시
         for (let i = 0; i < shopInfosForMap.length; i++) {
           setShopMarkers(shopInfosForMap[i]);
@@ -302,6 +274,8 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
           128.59938944544942
         );
         initMap(currentLocation);
+        // 현재 위치 마커 표시
+        setCurrentLocationMarker(currentLocation);
       }
 
       function handleGeoError() {
