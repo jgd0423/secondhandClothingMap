@@ -142,7 +142,7 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         const bodyRect = document.body.getBoundingClientRect();
         const elemRect = element.getBoundingClientRect();
         const offset = elemRect.top - bodyRect.top;
-        window.scrollTo(0, offset);
+        window.scrollTo({ top: offset, behavior: 'smooth' });
       }
 
       function goWrite() {
