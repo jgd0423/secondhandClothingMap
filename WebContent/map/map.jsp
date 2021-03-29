@@ -44,7 +44,7 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
       </div>
       <c:forEach var="shopObj" items="${shopInfos }">
         <section
-          id="${shopObj.id}"
+          id="obj${shopObj.no}"
           class="shop"
           style="background-color: ${shopObj.backgroundColor}"
         >
@@ -137,8 +137,12 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         initMap(currentLocation);
       }
 
-      function goShopSection(objId) {
-        const element = document.getElementById(objId);
+      function goShopSection(objNo) {
+        const element = document.getElementById(objNo);
+        const bodyRect = document.body.getBoundingClientRect();
+        const elemRect = element.getBoundingClientRect();
+        const offset = elemRect.top - bodyRect.top;
+        window.scrollTo(0, offset);
       }
 
       function goWrite() {
@@ -191,8 +195,9 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         kakao.maps.event.addListener(marker, 'click', () => {
           overlay.setMap(map);
           const objId = latlngObj.id;
+          const objNo = 'obj' + latlngObj.no;
           overlayObjs[objId] = overlay;
-          goShopSection(objId);
+          goShopSection(objNo);
         });
       }
 
