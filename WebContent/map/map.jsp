@@ -44,6 +44,7 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
       </div>
       <c:forEach var="shopObj" items="${shopInfos }">
         <section
+          id="${shopObj.id}"
           class="shop"
           style="background-color: ${shopObj.backgroundColor}"
         >
@@ -136,7 +137,9 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         initMap(currentLocation);
       }
 
-      function goShopSection(latlngObj) {}
+      function goShopSection(objId) {
+        const element = document.getElementById(objId);
+      }
 
       function goWrite() {
         location.href = '${path}/shop_servlet/write.do';
@@ -189,7 +192,7 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
           overlay.setMap(map);
           const objId = latlngObj.id;
           overlayObjs[objId] = overlay;
-          goShopSection(latlngObj);
+          goShopSection(objId);
         });
       }
 
