@@ -11,6 +11,7 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
       href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
     />
     <link rel="stylesheet" href="${path}/map/map.css" type="text/css" />
+    <script src="${path}/InstagramFeed/dist/InstagramFeed.min.js"></script>
   </head>
   <body>
     <div class="map-container">
@@ -56,23 +57,33 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
               <h4>${shopObj.title }</h4>
             </div>
             <div class="img-container">
-              <a
-                href="https://www.instagram.com/${shopObj.instagram}"
-                target="_blank"
-              >
-                <img
-                  style="width: 120px"
-                  src="${path}/attach/image/Instagram_simple_icon.svg"
-                />
-              </a>
-              <c:if test="${shopObj.shopUrl != null }">
-                <a href="${shopObj.shopUrl}" target="_blank">
-                  <img
-                    style="width: 120px"
-                    src="${path}/attach/image/shop.svg"
-                  />
-                </a>
-              </c:if>
+              <div
+                class="instagram-feed"
+                id="instagram-feed${shopObj.no}"
+              ></div>
+              <script>
+                (function () {
+                  new InstagramFeed({
+                    host:
+                      'https://images' +
+                      ~~(Math.random() * 3333) +
+                      '-focus-opensocial.googleusercontent.com/gadgets/proxy?container=none&url=https://www.instagram.com/',
+                    username: '${shopObj.instagram}',
+                    container: document.getElementById(
+                      'instagram-feed${shopObj.no}'
+                    ),
+                    display_profile: false,
+                    display_biography: false,
+                    display_gallery: true,
+                    callback: null,
+                    styling: false,
+                    items: 8,
+                    image_size: 240,
+                    items_per_row: 4,
+                    margin: 1,
+                  });
+                })();
+              </script>
             </div>
           </div>
         </section>

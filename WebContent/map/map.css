@@ -119,15 +119,33 @@ body {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  border: black 1px solid;
   width: 90%;
   height: 80%;
   margin-bottom: 20px;
 }
 
-.insta-img {
-  width: 23%;
-  height: 23%;
+.instagram-feed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.instagram_gallery {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  height: 100%;
+}
+
+.instagram_gallery a {
+  width: 24%;
+}
+
+.instagram_gallery img {
+  width: 100%;
+  border-radius: 6%;
 }
 
 /* 커스텀 오버레이 */
