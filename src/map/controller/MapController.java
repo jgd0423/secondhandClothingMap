@@ -1,6 +1,7 @@
 package map.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import org.json.simple.parser.JSONParser;
 import map.common.MapUtil;
 import map.model.dao.ShopInfoDAO;
 import map.model.dto.ShopInfoDTO;
+import map.service.InstaParser;
 import map.service.MapService;
 
 @WebServlet("/map_servlet/*")
@@ -93,16 +95,9 @@ public class MapController extends HttpServlet {
 			
 			MapService service = new MapService();
 			JSONArray shopInfos = service.getShopData(currentLat, currentLng, distance);
-			String[] backgroundColors = { "#AACFD0", "#A0D097", "#FFFCCB", "#FFA54E" };
+
 			
-			for (int i = 0; i < shopInfos.size(); i++) {
-				JSONObject shopInfo = (JSONObject) shopInfos.get(i);
-				int j = i;
-				if (j > 3) {
-					j = j % 4;
-				}
-				shopInfo.put("backgroundColor", backgroundColors[j]);
-			}
+
 			
 			request.setAttribute("shopInfos", shopInfos);
 			String page = "/map/map.jsp";

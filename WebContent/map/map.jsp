@@ -55,7 +55,25 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
             >
               <h4>${shopObj.title }</h4>
             </div>
-            <div class="img-container"><p>photo</p></div>
+            <div class="img-container">
+              <a
+                href="https://www.instagram.com/${shopObj.instagram}"
+                target="_blank"
+              >
+                <img
+                  style="width: 120px"
+                  src="${path}/attach/image/Instagram_simple_icon.svg"
+                />
+              </a>
+              <c:if test="${shopObj.shopUrl != null }">
+                <a href="${shopObj.shopUrl}" target="_blank">
+                  <img
+                    style="width: 120px"
+                    src="${path}/attach/image/shop.svg"
+                  />
+                </a>
+              </c:if>
+            </div>
           </div>
         </section>
       </c:forEach>
@@ -73,6 +91,8 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
       let distance = Number('${distance}') * 1000;
 
       const dbShopInfos = JSON.parse('${shopInfos}');
+
+      console.log(dbShopInfos);
 
       const shopInfosForMap = dbShopInfos.map((shopInfo) => {
         const data = new Object();
@@ -165,7 +185,7 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         content += latlngObj.address;
         content += '</div>';
         content += '<div><a href="';
-        content += latlngObj.instagram;
+        content += 'https://www.instagram.com/' + latlngObj.instagram;
         content += '" target="_blank" class="link">인스타그램</a></div>';
         content += '<div><span>온라인: </span>';
 

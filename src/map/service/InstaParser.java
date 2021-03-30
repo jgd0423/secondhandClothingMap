@@ -27,7 +27,7 @@ public class InstaParser {
     
     //Properties
     public static final String WEB_DRIVER_ID = "webdriver.chrome.driver";
-    public static final String WEB_DRIVER_PATH = "C:/Users/jgd04/Downloads/selenium-java-3.141.59/chromedriver.exe";
+    public static final String WEB_DRIVER_PATH = "C:/Users/hkit/Downloads/selenium-java-3.141.59/chromedriver.exe";
     
     //크롤링 할 URL
     private String base_url;
@@ -40,10 +40,11 @@ public class InstaParser {
         
         //Driver SetUp
         driver = new ChromeDriver();
-        base_url = "https://smihub.com/v/" + instaId;
+        base_url = "https://instagram.com/" + instaId;
     }
  
-    public void crawl() {
+    public ArrayList<String> crawl() {
+    	ArrayList<String> imgTagSrcs = new ArrayList<>();
         try {
             //get page (= 브라우저에서 url을 주소창에 넣은 후 request 한 것과 같다)
         	int waittime = 10;
@@ -52,18 +53,12 @@ public class InstaParser {
             
             Document doc = Jsoup.parse(driver.getPageSource());
             
-            System.out.println("HTML TITLE : " + doc.title());
             Elements tables = doc.select(".container");
             Elements linksOnPage = tables.select(".content__img-wrap");
             int i = 1;
             for (Element page : linksOnPage) {
-            	System.out.println("count : " + i++);
-            	Element link = page.select("a").first();
-            	String linkHref = link.attr("href");
-            	System.out.println("a href : " + base_url + linkHref);
             	Element img = page.select("img").first();
-            	String imgtag = img.outerHtml();
-            	System.out.println("img : " + imgtag);
+            	String imgTagSrc = img.attr("src");
             	if (i == 9) {
             		break;
             	}
@@ -74,6 +69,7 @@ public class InstaParser {
         } finally {
             driver.close();
         }
+		return imgTagSrcs;
  
     }
 		

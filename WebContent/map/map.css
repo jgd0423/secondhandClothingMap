@@ -117,12 +117,17 @@ body {
 
 .shop .img-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   border: black 1px solid;
   width: 90%;
   height: 80%;
   margin-bottom: 20px;
+}
+
+.insta-img {
+  width: 23%;
+  height: 23%;
 }
 
 /* 커스텀 오버레이 */
