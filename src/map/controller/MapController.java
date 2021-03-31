@@ -96,12 +96,9 @@ public class MapController extends HttpServlet {
 			MapService service = new MapService();
 			JSONArray shopInfos = service.getShopData(currentLat, currentLng, distance);
 
-			
-
-			
-			request.setAttribute("shopInfos", shopInfos);
 			String page = "/map/map.jsp";
 			
+			request.setAttribute("shopInfos", shopInfos);
 			request.setAttribute("distance", distance);
 			RequestDispatcher rd = request.getRequestDispatcher(page);
 			rd.forward(request, response);
