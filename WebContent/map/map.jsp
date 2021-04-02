@@ -28,6 +28,10 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
           />
         </button>
         <button class="btnInfo" id="btnAll">ALL</button>
+        <div id="buttonContainer">
+          <button class="distance btnInfo" id="btn500m">500</button>
+          <button class="distance btnInfo" id="btn1000m">1000</button>
+        </div>
       </div>
     </div>
     <div class="shop-container">
@@ -36,10 +40,7 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
         <br />
         현재 경도 : <span id="longitude"></span>
         <br />
-        <div id="buttonContainer">
-          <button class="distance">500</button>
-          <button class="distance">1000</button>
-        </div>
+
         <br />
         <button id="btnWrite" name="btnWrite">자료입력</button>
       </div>
@@ -102,8 +103,6 @@ pageEncoding="UTF-8"%> <%@ include file="../include/inc_header.jsp" %>
       let distance = Number('${distance}') * 1000;
 
       const dbShopInfos = JSON.parse('${shopInfos}');
-
-      console.log(dbShopInfos);
 
       const shopInfosForMap = dbShopInfos.map((shopInfo) => {
         const data = new Object();

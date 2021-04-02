@@ -57,6 +57,22 @@ body {
   right: 20px;
 }
 
+#btn500m {
+  padding: 4px;
+  width: 42px;
+  height: 42px;
+  top: 120px;
+  right: 20px;
+}
+
+#btn1000m {
+  padding: 4px;
+  width: 42px;
+  height: 42px;
+  top: 170px;
+  right: 20px;
+}
+
 .shop-container {
   margin-left: 60%;
   display: flex;
